@@ -1,0 +1,12 @@
+<template>
+  <aside>
+    <h1 id="brand">Proof of Chat</h1>
+    <nav>
+      <ul>
+        <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
+          <a href.bind="row.href">${row.title}</a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+</template>

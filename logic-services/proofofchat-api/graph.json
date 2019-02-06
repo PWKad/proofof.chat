@@ -1,0 +1,18 @@
+{
+    "nodes": [
+        {
+            "last_update": 1549430667,
+            "pub_key": "03e8035f33d02e629cf94ae28cee9d7201984b73c00969dbbb2785173909934d00",
+            "alias": "03e8035f33d02e629cf9",
+            "addresses": [
+                {
+                    "network": "tcp",
+                    "addr": "172.31.0.3:9735"
+                }
+            ],
+            "color": "#3399ff"
+        }
+    ],
+    "edges": [
+    ]
+}

@@ -1,0 +1,4 @@
+{
+  "connectionString": "mongodb://mongodb:27017/proofofchat",
+  "secret": "testingit1"
+}

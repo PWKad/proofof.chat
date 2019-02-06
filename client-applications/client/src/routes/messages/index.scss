@@ -1,0 +1,42 @@
+html, body {
+  height: 100%;
+
+  main {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    .header {
+      flex-shrink: 0;
+      overflow: auto;
+    }
+    .table-area {
+      flex-grow: 1;
+      overflow: auto;
+
+      .message {
+        background-color: #161616;
+        border-radius: 5px;
+        margin: 10px;
+        padding: 10px;
+
+        .info {
+
+        }
+        .content {
+
+        }
+        .actions {
+
+        }
+      }
+    }
+    .new-message {
+      padding: 20px;
+      border: 2px solid white;
+      flex-shrink: 0;
+      height: 100px;
+    }
+  }
+}

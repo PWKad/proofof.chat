@@ -1,0 +1,72 @@
+<template>
+  <require from="./index.css"></require>
+  <require from="../../components/display-invoice"></require>
+
+  <div class="row table-area">
+    <div class="col-12">
+      <div repeat.for="message of dataStore.messages" class="row message">
+        <div class="col-sm-3" class="info">
+          <span style="color: ${message.fromColor}">${message.sender}</span>
+          <p>${message.createdDate | dateFormat}</p>
+        </div>
+        <div class="col-sm-8" class="content">
+          <span>${message.message}</span>
+        </div>
+        <div class="col-sm-2" class="actions">
+          <template if.bind="!message.paymentConfirmed">
+            <a href="#"
+              click.trigger="showInvoice(message)">Show Invoice
+            </a>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row new-message">
+    <form class="col-12" submit.trigger="submit()">
+      <div class="row">
+        <div class="col-5">
+          <div class="form-group">
+            <textarea value.bind="message" id="message" rows="2" placeholder="paste message here"
+              class="form-control ${error ? 'is-invalid' : ''}"></textarea>
+
+            <div class="invalid-feedback">
+              ${error}
+            </div>
+          </div>
+        </div>
+        <div class="col-5">
+          <div class="form-group">
+            <textarea value.bind="signature"
+              class="form-control" id="signature" rows="2" placeholder="paste signature here"></textarea>
+          </div>
+        </div>
+        <div class="col-2">
+          <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <template if.bind="showCurrentInvoice">
+    <div class="modal fade show text-dark" role="dialog" style="display: block;" aria-modal="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLiveLabel">Pay invoice to finish post</h5>
+            <button type="button" class="close" click.trigger="closeModal()" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <display-invoice invoice.bind="currentInvoice"></display-invoice>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" click.trigger="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+</template>

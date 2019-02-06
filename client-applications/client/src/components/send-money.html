@@ -1,0 +1,72 @@
+<template>
+  <require from="./display-invoice"></require>
+
+  <div class="modal modal--visible">
+    <div class="modal__content">
+      <div class="row">
+        <div class="col-12">
+          <strong>On-chain Bitcoin Address</strong>
+        </div>
+      </div>
+      <form class="row">
+        <div class="form-group">
+          <input
+            class="form-control"
+            type="text"
+            value.bind="address.address"
+            disabled="disabled" />
+        </div>
+      </form>
+      <div class="row" if.bind="!isShowingLightningPanel">
+        <div class="col-12">
+          <button class="btn" click.trigger="toggleShowLightning()">
+            Send Using Lightning Instead?
+          </button>
+        </div>
+      </div>
+      <div class="row" if.bind="isShowingLightningPanel">
+        <div class="col-12" if.bind="!invoice">
+          <strong>Amount in Satoshis for Invoice</strong>
+
+          <div class="input-group">
+            <input type="text" value.bind="amount" class="form-control"  />
+            <div class="input-group-btn ${isCurrenciesOpen ? 'open' : ''}">
+              <button class="side-btn bs-dropdown-toggle" type="button" click.trigger="toggleOpenCurrencies()">
+                ${selectedCurrency.name}
+              </button>
+              <ul class="bs-dropdown-menu pull-right">
+                <li class="bs-dropdown-item">
+                  <a repeat.for="currency of currencies" href="#"
+                      click.delegate="selectCurrency(currency)"
+                      class="side-btn"
+                      style="background-color: transparent; border: transparent;">
+                    ${currency.name}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <button class="btn" click.trigger="generateInvoice()">
+            Generate Lightning Invoice
+          </button>
+          <button class="btn" click.trigger="toggleShowLightning()">
+            Cancel Lightning Payment
+          </button>
+        </div>
+        <div class="col-12" if.bind="invoice">
+          <display-invoice invoice.bind="invoice"></display-invoice>
+          <button class="btn" click.trigger="toggleShowLightning()">
+            Cancel Lightning Payment
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal__footer">
+      <button
+        class="btn btn--purple"
+        click.trigger="controller.cancel()">Close</button>
+    </div>
+  </div>
+</template>

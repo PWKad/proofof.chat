@@ -1,0 +1,60 @@
+{
+  "name": "proofofchat-api",
+  "version": "0.0.2",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "nodemon ./bin/www",
+    "test": "nodemon --exec 'jasmine'"
+  },
+  "dependencies": {
+    "@coinmesh/bitcoind-adapter": "^0.2.4",
+    "@coinmesh/lnd-adapter": "^0.2.9",
+    "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "bolt11": "^1.2.2",
+    "connect-ensure-login": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "express-jwt": "^5.3.1",
+    "jsonwebtoken": "^8.2.2",
+    "mongoose": "^5.3.9",
+    "morgan": "^1.9.1",
+    "redis": "^2.8.0"
+  },
+  "devDependencies": {
+    "jasmine": "^3.2.0",
+    "nodemon": "^1.18.3",
+    "supertest": "^3.1.0"
+  },
+  "main": "index.js",
+  "keywords": [
+    "coinmesh",
+    "gemini"
+  ],
+  "homepage": "http://coinmesh.com",
+  "license": "CC0-1.0",
+  "author": "Patrick Walters <patrick.walters@blockfuse.io> (http://blockfuse.io/)",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/coinmesh"
+  },
+  "coinmesh": {
+    "type": "logic-service",
+    "events": {
+      "loading": [
+        "/proofofchat-api.*prestart/i"
+      ],
+      "waiting": [
+        ""
+      ],
+      "ready": [
+        "/proofofchat-api.*nodemon.*starting/i"
+      ],
+      "failed": [
+        "/proofofchat-api.*nodemon.*app.*crashed/i"
+      ]
+    }
+  }
+}
