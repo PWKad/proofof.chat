@@ -15,11 +15,12 @@ const messages = require('./routes/messages');
 const networkInfo = require('./routes/network-info');
 // const peers = require('./routes/peers');
 const {verifyClient} = require('ln-service/push');
+const {subscribeToInvoices} = require('ln-service');
 
 const invoicesService = require('@coinmesh/lnd-adapter').invoicesService;
 const transactionsService = require('@coinmesh/lnd-adapter').transactionsService;
 
-const WebSocketServer = require('ws').Server;
+const webSocketService = require('./services/web-socket-service');
 
 const app = express();
 
@@ -41,47 +42,58 @@ function getApp(getServer = null) {
     if (getServer) {
       const server = getServer(app);
 
-      let wss = new WebSocketServer({ server });
+      // let wss = new WebSocketServer({ server });
 
-      wss.on('connection', (ws) => {
-        console.log('!'.repeat(100))
-        ws.send('connection accepted.');
-        console.log('sent')
-      });
+      // wss.on('connection', (ws) => {
+      //   console.log('!'.repeat(100))
+      //   ws.send('connection accepted.');
+      //   console.log('sent')
+      // });
 
-      let invoicesSubscription = invoicesService.subscribe();
+      // let invoicesSubscription = invoicesService.subscribe();
+      const lnd = invoicesService.lnd;
+      app.lnd = lnd;
+      const invoicesSubscription = subscribeToInvoices({lnd});
+      console.log('-'.repeat(100))
+      console.log(lnd)
 
-      console.log('subscribing to data')
-      console.log(invoicesSubscription)
-      invoicesSubscription.on('data', (invoice) => {
-        console.log('-'.repeat(100))
-        console.log('invoice updated')
-        console.log(invoice)
-        if (invoice.is_confirmed) {
-          messagesService.getByLightningRequest(invoice.request).then(message => {
-            console.log('='.repeat(100))
-            console.log(message)
-            if (message && !message.paymentConfirmed) {
-              message.paymentConfirmed = true;
-              message.message = message.hiddenMessage;
-              message.save().then(() => {
-                wss.emit('data', message);
-              });
-            }
-          });
-        }
-      });
-      console.log(invoicesSubscription)
-      invoicesSubscription.on('error', (data) => {
-        console.log(data)
-      });
-      invoicesSubscription.on('end', (data) => {
-        console.log(data)
-      });
-      invoicesSubscription.on('status', (data) => {
-        console.log(data)
-      });
-      invoicesSubscription.emit('data', {test: true})
+      invoicesSubscription.on('data', () => { console.log('testing'); });
+
+      webSocketService.createServer(server);
+      webSocketService.subscribe(invoicesSubscription);
+
+      app.webSocketService = webSocketService;
+      console.log('ok done')
+
+//TODO: Move this to wherever it works
+      // invoicesSubscription.on('data', (invoice) => {
+      //   console.log('-'.repeat(100))
+      //   console.log('invoice updated')
+      //   console.log(invoice)
+      //   if (invoice.is_confirmed) {
+      //     messagesService.getByLightningRequest(invoice.request).then(message => {
+      //       console.log('='.repeat(100))
+      //       console.log(message)
+      //       if (message && !message.paymentConfirmed) {
+      //         message.paymentConfirmed = true;
+      //         message.message = message.hiddenMessage;
+      //         message.save().then(() => {
+      //           wss.emit('data', message);
+      //         });
+      //       }
+      //     });
+      //   }
+      // });
+      // invoicesSubscription.on('error', (data) => {
+      //   console.log(data)
+      // });
+      // invoicesSubscription.on('end', (data) => {
+      //   console.log(data)
+      // });
+      // invoicesSubscription.on('status', (data) => {
+      //   console.log(data)
+      // });
+      // app.invoicesSubscription = invoicesSubscription;
     }
 
     // app.use('/v1/channels', channels);
