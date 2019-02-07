@@ -32,27 +32,31 @@ export class MessagesService {
     this.webSocket = new WebSocket(environment.webSocketServerUrl);
 
     this.webSocket.onmessage = (event) => {
-      console.log('Message from server ', event);
-      // socket.on('message', data => {
-      //   console.log('data incoming')
-      //   console.log(data)
-      //   if (data) {
-      //     this.dataStore.updateMessage(data)
-      //   }
-      // });
+      const data = event.data;
+
+      if (data && (typeof data === 'string')) {
+        const item = JSON.parse(data);
+
+        if (item.type === 'message') {
+          this.dataStore.updateMessage(item);
+        }
+      }
     };
+    this.webSocket.addEventListener('data', (event) => {
+      console.log('Message from server data', event);
+    });
     this.webSocket.addEventListener('error', (event) => {
-      console.log('Message from server ', event);
+      console.log('Message from server error', event);
     });
     this.webSocket.addEventListener('status', (event) => {
-      console.log('Message from server ', event);
+      console.log('Message from server status', event);
     });
     this.webSocket.addEventListener('end', (event) => {
-      console.log('Message from server ', event);
+      console.log('Message from server end', event);
     });
     return this.webSocket;
   }
   unsubscribe() {
-
+    this.webSocket.close();
   }
 }

@@ -8,6 +8,7 @@ module.exports = {
   getAll,
   getLatest,
   getById,
+  getByInvoiceId,
   create,
   update
 };
@@ -25,6 +26,10 @@ async function getLatest() {
 
 async function getById(id) {
   return await Message.findById(id);
+}
+
+async function getByInvoiceId(invoiceId) {
+  return await Message.findOne({invoiceId});
 }
 
 async function create(message, signature) {
@@ -53,8 +58,6 @@ async function create(message, signature) {
     tokens
   };
 
-  let invoice = await invoicesService.createInvoice(invoiceRequest);
-
   const messageParams = {
     message: 'Pay invoice to finish post',
     signature,
@@ -63,11 +66,17 @@ async function create(message, signature) {
     fromAlias: node.alias,
     fromColor: node.color,
     channelCount: node.channel_count || 0,
-    lightningRequest: invoice.request
   };
   const newMessage = new Message(messageParams);
 
   await newMessage.save();
+
+  let invoice = await invoicesService.createInvoice(invoiceRequest);
+
+  newMessage.lightningRequest = invoice.request;
+  newMessage.invoiceId = invoice.id;
+
+  newMessage.save();
 
   return newMessage;
 }

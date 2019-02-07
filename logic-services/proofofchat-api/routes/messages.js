@@ -14,9 +14,8 @@ router.post('/', async (req, res, next) => {
 
   try {
     const result = await messagesService.create(message, signature);
-    return res.json(result);
+    return res.json({ request: result.lightningRequest });
   } catch (error) {
-    console.error(error);
     return res.status(401).send({message: 'Unable to validate signature / message.'});
   }
 });

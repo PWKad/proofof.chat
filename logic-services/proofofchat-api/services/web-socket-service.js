@@ -1,49 +1,60 @@
 const WebSocketServer = require('ws').Server;
+const Message = require('../models/message');
 
 class WebSocketService {
   createServer(server) {
     this.wss = new WebSocketServer({ server });
-  }
-  subscribe(eventEmitter) {
 
-    eventEmitter.on('end', function(data) {
+    this.wss.on('connection', (ws) => {
+      ws.send(JSON.stringify({message: 'connection accepted'}));
+    });
+
+    return this.wss;
+  }
+  sendNewMessage(message) {
+    this.wss.clients.forEach((client) => {
+      if (client.readyState === 1) {
+        const body = JSON.stringify(message);
+        client.send(body);
+      }
+    });
+  }
+  subscribe(eventEmitter, invoicesService) {
+    eventEmitter.on('end', (data) => {
       console.log('end')
       console.log(data)
     });
-    eventEmitter.on('connection', function(data) {
-      console.log('connect')
-      console.log(data)
-    });
-    eventEmitter.on('error', function(data) {
+
+    eventEmitter.on('error', (data) => {
       console.log('error')
       console.log(data)
     });
 
-    eventEmitter.on('status', function(data) {
+    eventEmitter.on('status', (data) => {
       console.log('status')
       console.log(data)
     });
-    eventEmitter.on('data', function(data) {
-      console.log('data')
-      console.log(data)
-      // this.wss.clients.forEach(client => {
-      //   client.send(data.toString());
-      // });
-      // this.wss.emit('data', data.toString());
+
+    eventEmitter.on('data', (invoice) => {
+      setTimeout(() => {
+        Message.getMessageByInvoiceId(invoice.id).then(message => {
+          if (message && !message.paymentConfirmed && invoice.is_confirmed) {
+            message.paymentConfirmed = true;
+            message.message = message.hiddenMessage;
+
+            message.save().then(() => {
+              this.sendNewMessage(message);
+            });
+          } else {
+            this.sendNewMessage(message);
+          }
+        });
+      }, 500);
     });
 
-    eventEmitter.on('exit', function(code) {
-      console.log('exit')
-      console.log(code)
-      // this.wss.clients.forEach(client => {
-      //   client.send(code);
-      // });;
+    eventEmitter.on('exit', (data) => {
+      console.log('exiting')
     });
-    setTimeout(() => {
-      console.log('going to try to emit and see what happens')
-      eventEmitter.emit('data', { test: 'ok' });
-    }, 10000);
-    console.log('done')
   }
 }
 

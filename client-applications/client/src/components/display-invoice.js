@@ -14,12 +14,10 @@ export class DisplayInvoice {
 
   attached() {
     return this.refreshExchangeRateAndValues().then(exchangeRate => {
-      console.log(exchangeRate)
       this.showQrCode();
     });
   }
   showQrCode() {
-    console.log(this.invoice.request)
     if (this.qrCode) {
       this.qrCode.clear();
       this.qrCode.makeCode(this.invoice.request);

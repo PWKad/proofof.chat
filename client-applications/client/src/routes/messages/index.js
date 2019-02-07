@@ -4,7 +4,6 @@ import {DataStore} from '../../services/data-store';
 import {Invoice} from '../../models/invoice';
 
 export class Index {
-  @bindable messages = [];
   @bindable error = '';
   showCurrentInvoice = false;
 
@@ -14,21 +13,24 @@ export class Index {
     this.dataStore = dataStore;
   }
   attached() {
+    if (this.dataStore.messages.length !== 0) {
+      return;
+    }
     return this.messagesService.getMessages().then(messages => {
       this.dataStore.messages = messages;
-       this.messagesService.subscribe();
+      this.messagesService.subscribe();
     });
   }
   submit() {
     return this.messagesService.sendMessage(this.message, this.signature).then(result => {
-      this.messages.push(result);
+      this.showInvoice(result.request);
     }).catch(result => {
       this.error = result.content.message;
     });
   }
-  showInvoice(message) {
+  showInvoice(request) {
     this.currentInvoice = new Invoice({
-      request: message.lightningRequest
+      request
     });
     this.showCurrentInvoice = true;
   }

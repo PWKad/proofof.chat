@@ -1,3 +1,5 @@
+import {Message} from '../models/message';
+
 export class DataStore {
   nodes = [];
   messages = [];
@@ -30,7 +32,11 @@ export class DataStore {
   }
   updateMessage(updatedMessage) {
     const message = this.getMessageById(updatedMessage.id);
-    console.log(message)
-    message.merge(updatedMessage);
+
+    if (message) {
+      message.merge(updatedMessage);
+    } else {
+      this.addMessage(new Message(updatedMessage));
+    }
   }
 }
