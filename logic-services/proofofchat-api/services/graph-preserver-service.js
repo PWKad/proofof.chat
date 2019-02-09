@@ -86,7 +86,7 @@ class GraphPreserverService {
 
       if (classToUse) {
         const item = new SerializedUpdate(data, classToUse);
-        graphUpdatesService.saveUpdate(item);
+        graphUpdatesService.create(item);
       }
     });
 
