@@ -7,72 +7,33 @@ module.exports = {
   create,
   getAll,
   getById,
+  getByChannelId,
   update,
   getByPubkey,
   delete: _delete
 };
 
 async function getAll() {
-  let dbChannels = await Channel.find().select('-hash');
-
-  const result = await channelsService.getChannels();
-  const channels = result.channels;
-
-  let finalChannels = [];
-  let promises = [];
-
-  channels.forEach(channel => {
-    const match = dbChannels.find(dbChannel => dbChannel.channelId.toString() === channel.id.toString());
-
-    if (match) {
-      finalChannels.push(match);
-    } else {
-      let promise = createDbChannel(channel).then(newChannel => {
-        finalChannels.push(newChannel);
-      });
-      promises.push(promise);
-    }
-  });
-
-  await Promise.all(promises);
-
-  return finalChannels;
+  return await Channel.find().select('-hash');
 }
 
 async function getById(id) {
   return await Channel.findById(id);
 }
 
+async function getByChannelId(channelId) {
+  return await Channel.findOne({channelId});
+}
+
 async function getByPubkey(pubkey) {
   return await Channel.findOne({'policies.public_key': pubkey});
 }
 
-async function connectChannelToCurrentUser() {
-  const currentUser = await getCurrent();
+async function create(channelParams) {
+  channelParams.channelId = channelParams.id;
+  delete channelParams.id;
 
-  const channelParam = {
-    amount: 100000,
-    publicKey: currentUser.wallet.lightningPubkey
-  };
-
-  return await create(channelParam);
-}
-
-async function create(channelParam) {
-  const {
-    amount, publicKey
-  } = channelParam;
-
-  const result = await channelsService.openChannel(publicKey, amount);
-
-  return await createDbChannel(result);
-}
-
-async function createDbChannel(lndChannelObject) {
-  lndChannelObject.channelId = lndChannelObject.id;
-  delete lndChannelObject.id;
-
-  const channel = new Channel(lndChannelObject);
+  const channel = new Channel(channelParams);
 
   await channel.save();
 
@@ -99,8 +60,6 @@ async function _delete(id) {
   channel.archived = true;
 
   await channel.save();
-
-  await channelsService.closeChannel(channel.channelId);
 
   return true;
 }

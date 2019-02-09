@@ -2,73 +2,39 @@
   <require from="resources/two-decimal-format"></require>
   <require from="components/display-qr-code"></require>
 
-<!--   <section if.bind="session.currentUser">
+  <section>
     <header>
-      <h1>Your Connection</h1>
+      <h1>Nodes</h1>
     </header>
     <div>
-      <template if.bind="session.currentUser.wallet.lightningSocket">
-        <ul if.bind="refreshLightningConnectionStatus" class="unstyled-list">
-          <li>
-            <strong>Connection status:</strong>
-            ${channelConnectionStatus}
-          </li>
-          <li if.bind="channel">
-            <strong>Channel capacity:</strong>
-            ${channel.capacity}
-          </li>
-          <li if.bind="!channel">
-            <strong>Channel:</strong>
-            <em>Open channel to your lightning wallet not found!</em>
-            <button click.trigger="openChannel()" class="btn btn-primary">Open Channel</button>
-          </li>
-        </ul>
-      </template>
-      <template if.bind="!session.currentUser.wallet.lightningSocket">
-        <h3>Go to <a href="#/accounts">My Account</a> to set your Lightning Node information.</h3>
-      </template>
-    </div>
-  </section>
-
-  <section if.bind="session.currentUser">
-    <header>
-      <h1>Node Information</h1>
-    </header>
-    <div>
-      <p>This information can be used to open a connection to this node from your Bitcoin lightning-enabled wallet.</p>
-
-      <ul if.bind="networkInfo" class="unstyled-list">
-        <li>
-          <strong>Public key:</strong>
-          <input readonly="readonly" value.bind="networkInfo.walletInfo.public_key" type="text" style="width: 100%;" />
-        </li>
-        <li>
-          <strong>Alias:</strong>
-          <span style="color: ${networkInfo.nodeInfo.color}">${networkInfo.nodeInfo.alias}</span>
-        </li>
-        <li>
-          <strong>Capacity:</strong>
-          <span>${networkInfo.nodeInfo.capacity}</span>
-        </li>
-        <li>
-          <strong>Channel count:</strong>
-          <span>${networkInfo.nodeInfo.channel_count}</span>
-        </li>
-        <li>
-          <strong>Sockets:</strong>
-          <ul repeat.for="socket of networkInfo.nodeInfo.sockets" class="unstyled-list">
+      <ul class="unstyled-list">
+        <li repeat.for="node of dataStore.nodes">
+          <ul class="unstyled-list">
             <li>
-              <strong>Socket:</strong> ${socket.socket}
+              <strong>Capacity:</strong>
+              <span>${node.capacity}</span>
             </li>
             <li>
-              <strong>Type:</strong> ${socket.type}
+              <strong>Channel count:</strong>
+              <span>${node.channel_count}</span>
+            </li>
+            <li>
+              <strong>Sockets:</strong>
+              <ul repeat.for="socket of node.sockets" class="unstyled-list">
+                <li>
+                  <strong>Socket:</strong> ${socket.socket}
+                </li>
+                <li>
+                  <strong>Type:</strong> ${socket.type}
+                </li>
+              </ul>
+            </li>
+            <li>
+              <display-qr-code message.bind="'QR Code of Node URI:'" value.bind="node.nodeUri"></display-qr-code>
             </li>
           </ul>
         </li>
-        <li>
-          <display-qr-code message.bind="'QR Code of Node URI:'" value.bind="nodeUri"></display-qr-code>
-        </li>
       </ul>
     </div>
-  </section> -->
+  </section>
 </template>

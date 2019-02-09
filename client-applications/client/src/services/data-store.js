@@ -7,6 +7,9 @@ export class DataStore {
   addNode(node) {
     this.nodes.push(node);
   }
+  addNodes(nodes) {
+    nodes.forEach(node => this.addNode(node));
+  }
   addMessage(message) {
     this.messages.push(message);
   }

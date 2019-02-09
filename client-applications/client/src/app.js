@@ -25,7 +25,5 @@ export class App {
         title: 'Nodes'
       }
     ]);
-
-    config.mapUnknownRoutes('./routes/messages/index');
   }
 }

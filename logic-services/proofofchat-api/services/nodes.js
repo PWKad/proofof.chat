@@ -5,6 +5,7 @@ module.exports = {
   getAll,
   getById,
   getByPubkey,
+  getTop,
   create,
   update,
   delete: _delete
@@ -20,6 +21,11 @@ async function getById(id) {
 
 async function getByPubkey(pubkey) {
   return await Node.findOne({pub_key: pubkey});
+}
+
+async function getTop() {
+  return await this.getAll();
+  return await Node.find({capacity: {$gte: 0}}).select('-hash');
 }
 
 async function create(nodeParams) {

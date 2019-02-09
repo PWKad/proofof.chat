@@ -5,7 +5,6 @@ const schema = new Schema({
   capacity: { type: String },
   transaction_id: { type: String },
   transaction_vout: { type: String },
-  channelId: { type: String, required: true },
   policies: [{
     base_fee_mtokens: { type: String },
     cltv_delta: { type: String },
@@ -14,6 +13,7 @@ const schema = new Schema({
     min_htlc_mtokens: { type: String },
     public_key: { type: String }
   }],
+  channelId: { type: String, required: true },
   archived: { type: Boolean, default: false },
   createdDate: { type: Date, default: Date.now }
 });

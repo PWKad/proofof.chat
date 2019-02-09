@@ -12,14 +12,17 @@ const seedData = require('./config/seed-data');
 const exchangeRates = require('./routes/exchange-rates');
 // const invoices = require('./routes/invoices');
 const messages = require('./routes/messages');
+const nodes = require('./routes/nodes');
 const networkInfo = require('./routes/network-info');
 // const peers = require('./routes/peers');
 const {verifyClient} = require('ln-service/push');
 
 const invoicesService = require('@coinmesh/lnd-adapter').invoicesService;
 const transactionsService = require('@coinmesh/lnd-adapter').transactionsService;
+const networkInfoService = require('@coinmesh/lnd-adapter').networkInfoService;
 
 const webSocketService = require('./services/web-socket-service');
+const graphPreserverService = require('./services/graph-preserver-service');
 
 const app = express();
 
@@ -42,15 +45,19 @@ function getApp(getServer = null) {
       const server = getServer(app);
 
       let invoicesEventEmitter = invoicesService.subscribe();
+      let graphEventEmitter = networkInfoService.subscribe();
 
       webSocketService.createServer(server);
       webSocketService.subscribe(invoicesEventEmitter);
+
+      graphPreserverService.subscribe(graphEventEmitter);
     }
 
     // app.use('/v1/channels', channels);
     app.use('/v1/exchange-rates', exchangeRates);
     // app.use('/v1/invoices', invoices);
     app.use('/v1/messages', messages);
+    app.use('/v1/nodes', nodes);
     app.use('/v1/network-info', networkInfo);
     // app.use('/v1/peers', peers);
 

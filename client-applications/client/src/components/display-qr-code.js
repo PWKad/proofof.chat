@@ -1,6 +1,5 @@
 import {bindable} from 'aurelia-templating';
 import $ from 'jquery';
-import {ExchangeRatesService} from '../services/exchange-rates';
 
 export class DisplayQrCode {
   @bindable value;
@@ -8,20 +7,8 @@ export class DisplayQrCode {
 
   qrCodeElement;
 
-  static inject = [Session, ExchangeRatesService];
-  constructor(session, exchangeRatesService) {
-    this.session = session;
-    this.exchangeRatesService = exchangeRatesService;
-  }
-
   attached() {
-    if (!this.session.currentExchangeRate) {
-      return this.refreshExchangeRateAndValues().then(() => {
-        this.showQrCode();
-      });
-    } else {
-      this.showQrCode();
-    }
+    this.showQrCode();
   }
   showQrCode() {
     if (this.qrCode) {
@@ -34,8 +21,5 @@ export class DisplayQrCode {
         height: 150
       });
     }
-  }
-  refreshExchangeRateAndValues() {
-    return this.exchangeRatesService.getExchangeRate();
   }
 }

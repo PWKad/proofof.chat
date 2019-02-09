@@ -19,7 +19,7 @@ class WebSocketService {
       }
     });
   }
-  subscribe(eventEmitter, invoicesService) {
+  subscribe(eventEmitter) {
     eventEmitter.on('end', (data) => {
       console.log('end')
       console.log(data)
