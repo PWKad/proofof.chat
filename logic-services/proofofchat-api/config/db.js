@@ -9,5 +9,6 @@ module.exports = {
   Invoice: require('../models/invoice'),
   Message: require('../models/message'),
   Node: require('../models/node'),
-  Peer: require('../models/peer')
+  Peer: require('../models/peer'),
+  GraphUpdate: require('../models/graph-update'),
 };

@@ -1,35 +1,37 @@
+const graphUpdatesService = require('./graph-updates-service');
+
 const ChannelUpdate = {
   id: 'i',
-  base_fee_mtokens: '1',
-  capacity: '2',
-  cltv_delta: '3',
-  fee_rate: '4',
-  is_disabled: '5',
-  min_htlc_mtokens: '6',
-  public_keys: '7',
-  transaction_id: '8',
-  transaction_vout: '9',
+  base_fee_mtokens: 'a',
+  capacity: 'b',
+  cltv_delta: 'c',
+  fee_rate: 'd',
+  is_disabled: 'e',
+  min_htlc_mtokens: 'f',
+  public_keys: 'g',
+  transaction_id: 'h',
+  transaction_vout: 'j',
   type: 't',
   updated_at: 'u'
 }
 
 const ChannelClosedUpdate = {
-  capacity: '0',
+  capacity: 'k',
   id: 'i',
-  close_height: '2',
-  transaction_id: '3',
-  transaction_vout: '4',
+  close_height: 'l',
+  transaction_id: 'm',
+  transaction_vout: 'n',
   type: 't',
   updated_at: 'u'
 }
 
 const NodeUpdate = {
-  alias: '0',
-  color: '1',
-  public_key: '2',
-  sockets: '3',
-  type: 't',
-  updated_at: 'u'
+  alias: 'o',
+  color: 'a',
+  public_key: 'p',
+  sockets: 'q',
+  type: 'r',
+  updated_at: 's'
 }
 
 class SerializedUpdate {
@@ -84,7 +86,7 @@ class GraphPreserverService {
 
       if (classToUse) {
         const item = new SerializedUpdate(data, classToUse);
-        graphPreserverService.saveUpdate(item);
+        graphUpdatesService.saveUpdate(item);
       }
     });
 

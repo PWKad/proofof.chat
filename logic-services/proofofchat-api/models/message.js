@@ -34,4 +34,4 @@ schema.statics.getMessageByInvoiceId = function (invoiceId) {
   return this.findOne({invoiceId});
 }
 
-module.exports = mongoose.model('Template', schema);
+module.exports = mongoose.model('Message', schema);
