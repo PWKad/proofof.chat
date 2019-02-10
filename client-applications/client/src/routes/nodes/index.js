@@ -1,20 +1,11 @@
-import {bindable} from 'aurelia-framework';
-import {NodesService} from '../../services/nodes';
-import {DataStore} from '../../services/data-store';
-
 export class Index {
-  static inject = [NodesService, DataStore];
-  constructor(nodesService, dataStore) {
-    this.nodesService = nodesService;
-    this.dataStore = dataStore;
-  }
-  activate() {
-    if (!this.dataStore.nodes) {
-      return;
-    }
+  configureRouter(config, router) {
+    config.map([
+      { route: ['', 'list'],  moduleId: './routes/list', nav: false, title: 'List' },
+      { route: '/ln-visualizer',  moduleId: './routes/ln-visualizer', nav: false, title: 'LN Visualizer' },
+      { route: '/:id',  moduleId: './routes/details', nav: false, title: 'Details' }
+    ]);
 
-    return this.nodesService.getTopNodes().then(nodes => {
-      this.dataStore.addNodes(nodes);
-    });
+    this.router = router;
   }
 }

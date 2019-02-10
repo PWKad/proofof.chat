@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 
 const errorHandler = require('./config/error-handler');
 const seedData = require('./config/seed-data');
+const cleanGraphData = require('./config/clean-graph-data');
 
 // const channels = require('./routes/channels');
 const exchangeRates = require('./routes/exchange-rates');
@@ -52,6 +53,8 @@ function getApp(getServer = null) {
 
       graphPreserverService.subscribe(graphEventEmitter);
     }
+
+    // cleanGraphData();
 
     // app.use('/v1/channels', channels);
     app.use('/v1/exchange-rates', exchangeRates);

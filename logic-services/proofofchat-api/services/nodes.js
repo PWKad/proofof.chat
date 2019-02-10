@@ -25,7 +25,7 @@ async function getByPubkey(pubkey) {
 
 async function getTop() {
   return await this.getAll();
-  return await Node.find({capacity: {$gte: 0}}).select('-hash');
+  return await Node.find({capacity: {$gte: 0}}).select('-hash').limit(10);
 }
 
 async function create(nodeParams) {

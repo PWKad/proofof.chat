@@ -1,0 +1,49 @@
+<template>
+  <require from="../../../resources/two-decimal-format"></require>
+  <!-- <require from="components/display-qr-code"></require> -->
+
+  <section>
+    <header>
+      <h1>Nodes</h1>
+    </header>
+    <div>
+      <ul class="unstyled-list">
+        <li repeat.for="node of dataStore.nodes">
+          <ul class="unstyled-list">
+            <li>
+              <strong>Alias:</strong>
+              <span>${node.alias}</span>
+            </li>
+            <li>
+              <strong>Title:</strong>
+              <span>${node.title || 'Title not set!'}</span>
+            </li>
+            <li>
+              <strong>Description:</strong>
+              <span>${node.description || 'Description not set!'}</span>
+            </li>
+            <li>
+              <strong>Public Key:</strong>
+              <span>${node.pub_key}</span>
+            </li>
+            <li>
+              <strong>Messages sent:</strong>
+              <span>${node.messageCount}</span>
+            </li>
+            <li>
+              <strong>Sockets:</strong>
+              <ul repeat.for="address of node.addresses" class="unstyled-list">
+                <li>
+                  <strong>Network:</strong> ${address.network}
+                </li>
+                <li>
+                  <strong>Address:</strong> ${address.addr}
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </section>
+</template>
