@@ -3,7 +3,7 @@ const router = express.Router();
 const messagesService = require('../services/messages');
 
 router.get('/', async (req, res, next) => {
-  const result = await messagesService.getLatest();
+  const result = await messagesService.getAll();
 
   return res.json(result);
 });
