@@ -23,7 +23,7 @@ const transactionsService = require('@coinmesh/lnd-adapter').transactionsService
 const networkInfoService = require('@coinmesh/lnd-adapter').networkInfoService;
 
 const webSocketService = require('./services/web-socket-service');
-const graphPreserverService = require('./services/graph-preserver-service');
+const graphPreserverService = require('./services/graph-updates/preserver-service');
 
 const app = express();
 

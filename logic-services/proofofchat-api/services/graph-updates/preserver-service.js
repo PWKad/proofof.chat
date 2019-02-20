@@ -1,4 +1,4 @@
-const graphUpdatesService = require('./graph-updates-service');
+const graphUpdatesService = require('./graph-updates/service');
 
 const ChannelUpdate = {
   id: 'i',
