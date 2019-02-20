@@ -8,6 +8,14 @@ router.get('/top', async (req, res, next) => {
   return res.json(result);
 });
 
+router.get('/:pubkey', async (req, res, next) => {
+  const pubkey = req.params.pubkey;
+
+  const result = await nodesService.getByPubkey(pubkey);
+
+  return res.json(result);
+});
+
 router.patch('/update/:id', async (req, res, next) => {
   const node = req.body.node;
   const signature = req.body.signature;

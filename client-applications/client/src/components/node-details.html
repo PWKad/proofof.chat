@@ -1,0 +1,51 @@
+<template>
+  <require from="./display-qr-code"></require>
+
+  <div class="card bg-secondary">
+    <div class="card-header">
+      <button class="btn btn-danger btn-sm pull-right" click.trigger="click()">
+        <i class="fa fa-close"></i>
+      </button>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item bg-secondary">
+        <strong>Alias:</strong>
+        <span style="color: ${node.color}">${node.alias}</span>
+      </li>
+      <li class="list-group-item bg-secondary">
+        <strong>Title:</strong>
+        <span>${node.title || 'Title not set!'}</span>
+      </li>
+      <li class="list-group-item bg-secondary">
+        <strong>Description:</strong>
+        <span>${node.description || 'Description not set!'}</span>
+      </li>
+      <li class="list-group-item bg-secondary">
+        <strong>Public Key:</strong>
+        <span>${node.pub_key}</span>
+      </li>
+      <li class="list-group-item bg-secondary">
+        <strong>Messages sent:</strong>
+        <span>${node.messageCount}</span>
+      </li>
+      <li class="list-group-item bg-secondary">
+        <strong>Sockets:</strong>
+      </li>
+      <template repeat.for="address of node.addresses">
+        <li class="list-group-item bg-secondary" >
+          ${address.network}: <strong>${address.addr}</strong>
+        </li>
+        <li class="list-group-item">
+          <display-qr-code value.bind="getNodeUri(node.pub_key, address.addr)" message.bind="address.network"></display-qr-code>
+        </li>
+      </template>
+
+      <li class="list-group-item bg-secondary" repeat.for="address of node.addresses">
+        <a
+            href="https://1ml.com/node/${node.pub_key}"
+            class="btn btn-info" target="_blank">
+          View on 1ml.com</a>
+      </li>
+    </ul>
+  </div>
+</template>

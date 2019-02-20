@@ -2,13 +2,24 @@
   <require from="./index.css"></require>
   <require from="../../components/display-invoice"></require>
   <require from="../../resources/value-converters/sort"></require>
+  <require from="../../components/node-details"></require>
 
   <div class="row table-area">
-    <div class="col-12">
+    <div class="${selectedNode ? 'col-3' : 'hidden'}" style="${selectedNode ? '' : 'width: 0; display: none;'}">
+      <div class="row node-details">
+        <div class="col-sm-12">
+          <node-details node.bind="selectedNode" close.call="closeNodeDetails()"></node-details>
+        </div>
+      </div>
+    </div>
+
+    <div class="${selectedNode ? 'col-9' : 'col-12'}">
       <div repeat.for="message of dataStore.messages | sort:'createdDate'" class="row message">
         <div class="col-sm-3" class="info">
-          <span style="color: ${message.fromColor}">${message.sender}</span>
-          <p>${message.createdDate | dateFormat}</p>
+          <button click.delegate="showNodeDetails(message.fromPubkey)" class="btn btn-dark">
+            <span style="color: ${message.fromColor}">${message.sender}</span>
+            <p>${message.createdDate | dateFormat}</p>
+          </button>
         </div>
         <div class="col-sm-8" class="content">
           <span>${message.message}</span>

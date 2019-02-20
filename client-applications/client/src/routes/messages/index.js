@@ -1,5 +1,6 @@
 import {bindable} from 'aurelia-framework';
 import {MessagesService} from '../../services/messages';
+import {NodesService} from '../../services/nodes';
 import {DataStore} from '../../services/data-store';
 import {Invoice} from '../../models/invoice';
 
@@ -7,9 +8,10 @@ export class Index {
   @bindable error = '';
   showCurrentInvoice = false;
 
-  static inject = [MessagesService, DataStore];
-  constructor(messagesService, dataStore) {
+  static inject = [MessagesService, NodesService, DataStore];
+  constructor(messagesService, nodesService, dataStore) {
     this.messagesService = messagesService;
+    this.nodesService = nodesService;
     this.dataStore = dataStore;
   }
   attached() {
@@ -36,5 +38,13 @@ export class Index {
   }
   closeModal() {
     this.showCurrentInvoice = false;
+  }
+  showNodeDetails(pubkey) {
+    return this.nodesService.getNodeByPubkey(pubkey).then(node => {
+      this.selectedNode = node;
+    });
+  }
+  closeNodeDetails() {
+    this.selectedNode = null;
   }
 }

@@ -18,6 +18,13 @@ export class NodesService {
       return nodes.map(node => new Node(node));
     });
   }
+  getNodeByPubkey(pubkey) {
+    const url = `/nodes/${pubkey}`;
+
+    return this.http.get(url).then(node => {
+      return new Node(node);
+    });
+  }
   subscribe() {
     if (this.webSocket) {
       return this.webSocket;

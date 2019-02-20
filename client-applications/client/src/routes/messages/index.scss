@@ -7,6 +7,15 @@ html, body {
     flex-direction: column;
     flex-wrap: nowrap;
 
+    .node-details {
+      background-color: #161616;
+      border-radius: 5px;
+      margin: 10px;
+      padding: 10px;
+      flex-grow: 1;
+      overflow-x: auto;
+      height: 100%;
+    }
     .header {
       flex-shrink: 0;
       overflow: auto;
