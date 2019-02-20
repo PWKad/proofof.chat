@@ -4,7 +4,7 @@ export function configure(aurelia) {
   aurelia.use
     .standardConfiguration()
     .globalResources([
-      './resources/date-format'
+      './resources/value-converters/date-format'
     ])
     .plugin('aurelia-dialog');
 
