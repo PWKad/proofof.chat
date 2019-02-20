@@ -20,21 +20,6 @@ class WebSocketService {
     });
   }
   subscribe(eventEmitter) {
-    eventEmitter.on('end', (data) => {
-      console.log('end')
-      console.log(data)
-    });
-
-    eventEmitter.on('error', (data) => {
-      console.log('error')
-      console.log(data)
-    });
-
-    eventEmitter.on('status', (data) => {
-      console.log('status')
-      console.log(data)
-    });
-
     eventEmitter.on('data', (invoice) => {
       setTimeout(() => {
         Message.getMessageByInvoiceId(invoice.id).then(message => {

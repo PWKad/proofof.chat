@@ -9,13 +9,10 @@ const errorHandler = require('./config/error-handler');
 const seedData = require('./config/seed-data');
 const cleanGraphData = require('./config/clean-graph-data');
 
-// const channels = require('./routes/channels');
 const exchangeRates = require('./routes/exchange-rates');
-// const invoices = require('./routes/invoices');
 const messages = require('./routes/messages');
 const nodes = require('./routes/nodes');
 const networkInfo = require('./routes/network-info');
-// const peers = require('./routes/peers');
 const {verifyClient} = require('ln-service/push');
 
 const invoicesService = require('@coinmesh/lnd-adapter').invoicesService;
@@ -56,13 +53,10 @@ function getApp(getServer = null) {
 
     // cleanGraphData();
 
-    // app.use('/v1/channels', channels);
     app.use('/v1/exchange-rates', exchangeRates);
-    // app.use('/v1/invoices', invoices);
     app.use('/v1/messages', messages);
     app.use('/v1/nodes', nodes);
     app.use('/v1/network-info', networkInfo);
-    // app.use('/v1/peers', peers);
 
     app.use(errorHandler);
 

@@ -1,6 +1,5 @@
 const db = require('../config/db');
 const Channel = db.Channel;
-const channelsService = require('@coinmesh/lnd-adapter').channelsService;
 
 module.exports = {
   connectChannelToCurrentUser,
@@ -23,10 +22,6 @@ async function getById(id) {
 
 async function getByChannelId(channelId) {
   return await Channel.findOne({channelId});
-}
-
-async function getByPubkey(pubkey) {
-  return await Channel.findOne({'policies.public_key': pubkey});
 }
 
 async function create(channelParams) {

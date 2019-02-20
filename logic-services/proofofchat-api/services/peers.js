@@ -8,7 +8,6 @@ module.exports = {
   getAll,
   getById,
   getByPubkey,
-  getStatusByPubkey,
   create,
   update,
   delete: _delete
@@ -31,7 +30,7 @@ async function getAll() {
       finalPeers.push(match);
     } else {
       console.error('No match found, creating a new peer.');
-      let promise = createDbPeer(peer);
+      let promise = create(peer);
 
       promise.then(newPeer => {
         finalPeers.push(newPeer);
@@ -52,45 +51,9 @@ async function getByPubkey(pubkey) {
   return await Peer.findOne({public_key: pubkey});
 }
 
-async function getStatusByPubkey(pubkey) {
-  const peer = await Peer.findOne({public_key: pubkey});
-
-  return !!peer ? peer.ping_time : 'not connected';
-}
-
-async function connectPeerToCurrentUser() {
-  const currentUser = await getCurrent();
-
-  const publicKey = currentUser.wallet.lightningPubkey;
-  const socket = currentUser.wallet.lightningSocket;
-
-  const peer = await getByPubkey(publicKey);
-
-  if (peer) {
-    return peer;
-  }
-
-  const peerParam = {
-    socket,
-    publicKey
-  };
-
-  return await create(peerParam);
-}
-
-async function create(peerParam) {
-  const {
-    socket, publicKey
-  } = peerParam;
-
-  let result = await peersService.addPeer(socket, publicKey);
-
-  return await createDbPeer(result);
-}
-
-async function createDbPeer(peerParams) {
+async function create(peerParams) {
   const peer = new Peer(peerParams);
-  
+
   await peer.save();
 
   return peer;

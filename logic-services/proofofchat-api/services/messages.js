@@ -20,7 +20,7 @@ async function getAll() {
 async function getLatest() {
   const fiveDaysAgo = new Date();
   fiveDaysAgo.setDate(fiveDaysAgo.getDate()-5);
-  const messages = await Message.findOne();
+
   return await Message.find({createdDate: {$gte: fiveDaysAgo}}).select('-hash');
 }
 
