@@ -1,4 +1,5 @@
 export class Node {
+  id = '';
   pub_key = '';
   alias = '';
   capacity = '';

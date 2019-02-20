@@ -24,7 +24,7 @@
     "prestart": "npm run rebuild-packages",
     "rebuild-packages": "npm rebuild",
     "start": "au run --watch",
-    "test": "gulp test"
+    "test": "au test --watch"
   },
   "peerDependencies": {},
   "devDependencies": {

@@ -42,18 +42,7 @@ export class MessagesService {
         }
       }
     };
-    this.webSocket.addEventListener('data', (event) => {
-      console.log('Message from server data', event);
-    });
-    this.webSocket.addEventListener('error', (event) => {
-      console.log('Message from server error', event);
-    });
-    this.webSocket.addEventListener('status', (event) => {
-      console.log('Message from server status', event);
-    });
-    this.webSocket.addEventListener('end', (event) => {
-      console.log('Message from server end', event);
-    });
+
     return this.webSocket;
   }
   unsubscribe() {

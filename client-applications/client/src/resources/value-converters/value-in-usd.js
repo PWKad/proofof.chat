@@ -1,6 +1,4 @@
 export class ValueInUsdValueConverter {
-  static inject = [Session];
-
   toView(value, lastExchangeRate) {
     const dollarsPerSatoshi = lastExchangeRate / 100000000;
     const satoshis = value;

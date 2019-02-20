@@ -39,7 +39,7 @@ services:
       - "3304:3304"
       - "3009:3009"
       - "3098:3098"
-      - "3678:3678"
+      - "3432:3432"
     command: "npm start --unsafe-perm"
     environment:
       - RPC_PORT=18443

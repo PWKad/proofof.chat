@@ -1,4 +1,5 @@
 export class Message {
+  id;
   message;
   fromPubkey;
   fromAlias;

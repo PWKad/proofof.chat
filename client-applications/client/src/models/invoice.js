@@ -26,11 +26,4 @@ export class Invoice {
   constructor(data) {
     Object.assign(this, data);
   }
-  setListing(listing) {
-    if (!(listing instanceof Listing)) {
-      listing = new Listing(listing);
-    }
-    this.listing = listing;
-    this.listingId = listing.id;
-  }
 }
